@@ -1,5 +1,5 @@
 <template>
-  <h1>Peek-a-Vue</h1>
+  <h1>Card Memory Game</h1>
   <section class="game-board">
     <Card 
     v-for="(card, index) in cardList"
@@ -12,7 +12,7 @@
     />
   </section>
   <h2>{{ status }}</h2>
-  <button @click="restartGame">Restart Game</button>
+  <button @click="restartGame" class="button" ><img src="Images/restart.svg" alt="Restart Icon"/> Restart Game </button>
 </template>
 
 <script>
@@ -58,7 +58,7 @@ export default {
       })
     }
 
-    const cardItems = [1,2,3,4,5,6,7,8]
+    const cardItems = ['Bat', 'Bones', 'Dracula', 'Eye', 'Ghost', 'Pumpkin', 'Skull', 'Cauldron']
 
     cardItems.forEach(item => {
       cardList.value.push({
@@ -132,21 +132,56 @@ export default {
 </script>
 
 <style>
+@font-face{
+  font-family: "Creepy";
+  src: url('../public/Fonts/Creepy.woff') format('woff'), url('../public/Fonts/Creepy.woff2') format('woff2')
+}
+html, body{
+  margin: 0;
+  padding: 0;
+}
+
+h1{
+  margin-top: 0;
+  font-family: Creepy, serif;
+  font-weight: normal;
+  text-align: center;
+  font-size: 40px;
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  background-image: url('../public/Images/page-bg.png');
+  background-color: #9D5900;
+  height: 100vh;
+  color: #FF6D00;
+  padding-top: 10px;
 }
 
 .game-board{
   display: grid;
-  grid-template-columns: 100px 100px 100px 100px;
-  grid-column-gap: 30px;
-  grid-template-rows: 100px 100px 100px 100px;
-  grid-row-gap: 30px;
+  grid-template-columns: 125px 125px 125px 125px;
+  grid-column-gap: 24px;
+  grid-template-rows: 125px 125px 125px 125px;
+  grid-row-gap: 24px;
   justify-content: center;
+}
+
+.button {
+  background-color: #FF6D00;
+  color: #fff;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  border-radius: 10px;
+}
+.button img {
+  padding-right: 5px;
+  font-weight: bold;
 }
 </style>
