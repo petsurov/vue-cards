@@ -63,14 +63,14 @@ export default {
     cardItems.forEach(item => {
       cardList.value.push({
         value: item,
-        visible: true,
+        visible: false,
         position: null,
         matched: false
       })
 
       cardList.value.push({
         value: item,
-        visible: true,
+        visible: false,
         position: null,
         matched: false
       })
@@ -102,8 +102,10 @@ export default {
           cardList.value[firstCard.position].matched = true
           cardList.value[secondCard.position].matched = true
         } else {
-          cardList.value[firstCard.position].visible = false
-          cardList.value[secondCard.position].visible = false
+          setTimeout(() => {
+            cardList.value[firstCard.position].visible = false
+            cardList.value[secondCard.position].visible = false
+          }, 2000)
         }
 
 
