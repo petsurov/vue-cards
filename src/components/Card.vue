@@ -35,7 +35,7 @@ export default{
 <template>
     <div class="card" @click="selectCard">
         <div v-if="visible" class="card-side front">
-            {{ value }} - {{ position }}
+            {{ value }} - {{ position }} - {{ matched }}
         </div>
         <div v-else class="card-side back">
             Back
