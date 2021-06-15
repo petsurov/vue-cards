@@ -12,7 +12,8 @@
     />
   </transition-group>
   <h2>{{ status }}</h2>
-  <button @click="restartGame" class="button" ><img src="Images/restart.svg" alt="Restart Icon"/> Restart Game </button>
+  <button v-if="newGame" @click="startGame" class="button" ><img src="Images/play.svg" alt="Restart Icon"/> Start Game </button>
+  <button v-else @click="restartGame" class="button" ><img src="Images/restart.svg" alt="Restart Icon"/> Restart Game </button>
 </template>
 
 <script>
@@ -29,6 +30,12 @@ export default {
   setup() {
     const cardList = ref([])
     const userSelection = ref([])
+    const newGame = ref(true)
+
+    const startGame = () => {
+      newGame.value = false
+      restartGame()
+    }
     const status = computed(() => {
       if (remainingPairs.value === 0) {
         return 'Player wins!'
@@ -61,7 +68,7 @@ export default {
       cardList.value.push({
         value: item,
         variant: 1,
-        visible: false,
+        visible: true,
         position: null,
         matched: false
       })
@@ -69,7 +76,7 @@ export default {
       cardList.value.push({
         value: item,
         variant: 2,
-        visible: false,
+        visible: true,
         position: null,
         matched: false
       })
@@ -129,7 +136,9 @@ export default {
       flipCard,
       userSelection,
       status,
-      restartGame
+      restartGame,
+      newGame,
+      startGame
     }
   }
 }
@@ -182,6 +191,7 @@ h1{
   align-items: center;
   justify-content: center;
   margin: 0 auto;
+  border: 0;
   border-radius: 10px;
 }
 .button img {
