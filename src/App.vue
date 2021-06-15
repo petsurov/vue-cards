@@ -11,9 +11,12 @@
     @select-card="flipCard"
     />
   </transition-group>
+  <div id="start-text" @click="startGame" class="overlay-text visible">Click to start game</div>
+  <div id="victory-text" class="overlay-text">VICTORY
+    <span id="turns-text" class="overlay-text-small"></span>
+    <span id="restart-text" @click="startGame" class="overlay-text-restart">Click to Restart</span>
+  </div>
   <h2>{{ status }}</h2>
-  <button v-if="newGame" @click="startGame" class="button" ><img src="Images/play.svg" alt="Restart Icon"/> Start Game </button>
-  <button v-else @click="restartGame" class="button" ><img src="Images/restart.svg" alt="Restart Icon"/> Restart Game </button>
 </template>
 
 <script>
@@ -31,14 +34,21 @@ export default {
     const cardList = ref([])
     const userSelection = ref([])
     const newGame = ref(true)
+    var turns = 0
 
     const startGame = () => {
+      const start = document.getElementById("start-text")
+      const victory = document.getElementById("victory-text")
+      victory.classList.remove('visible')
+      start.classList.remove('visible')
       newGame.value = false
       restartGame()
     }
     const status = computed(() => {
       if (remainingPairs.value === 0) {
-        return 'Player wins!'
+        const victory = document.getElementById("victory-text")
+        document.getElementById("turns-text").textContent=`Turns: ${turns}`
+        return victory.classList.add('visible')
       } else {
         return `Remaining Pairs: ${remainingPairs.value}`
       }
@@ -104,7 +114,6 @@ export default {
       }
     }
     
-    //example
     watch(remainingPairs, currentValue => {
       if (currentValue === 0) {
         runConfetti()
@@ -119,11 +128,14 @@ export default {
         if (firstCard.faceValue === secondCard.faceValue) {
           cardList.value[firstCard.position].matched = true
           cardList.value[secondCard.position].matched = true
+          turns+=1
+          
         } else {
           setTimeout(() => {
             cardList.value[firstCard.position].visible = false
             cardList.value[secondCard.position].visible = false
-          }, 2000)
+            turns+=1
+          }, 500)
         }
         userSelection.value.length = 0
       }
@@ -154,6 +166,7 @@ html, body{
   padding: 0;
 }
 
+
 h1{
   margin-top: 0;
   font-family: Creepy, serif;
@@ -181,6 +194,48 @@ h1{
   grid-template-rows: 125px 125px 125px 125px;
   grid-row-gap: 24px;
   justify-content: center;
+}
+
+.overlay-text {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  font-family: Creepy, serif;
+  cursor: default;
+}
+
+.overlay-text-small {
+  font-size: .3em;
+  font-family:fantasy;
+  cursor: default;
+}
+.overlay-text-restart {
+  font-size: .3em;
+  color: #692323;
+  cursor: default;
+}
+
+.overlay-text.visible {
+  display: flex;
+  flex-direction: column;
+  animation: overlay-grow 500ms forwards;
+}
+
+@keyframes overlay-grow {
+  from {
+    background-color: rgba(0, 0, 0, 0);
+    font-size: 0;
+  }
+  to {
+    background-color: rgba(0, 0, 0, .8);
+    font-size: 10em;
+  }
 }
 
 .button {
