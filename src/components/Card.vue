@@ -1,5 +1,7 @@
 <script>
-export default{
+import { computed } from '@vue/runtime-core'
+
+export default {
     props: {
         matched: {
             type: Boolean,
@@ -18,7 +20,13 @@ export default{
             default: false
         }
     },
-    setup(props,context) {
+    setup(props, context) {
+        const flippedStyles = computed(() => {
+            if (props.visible) {
+                return 'is-flipped'
+            }
+        })
+
         const selectCard = () => {
             context.emit('select-card', {
                 position: props.position,
@@ -26,6 +34,7 @@ export default{
             })
         }
         return {
+            flippedStyles,
             selectCard
         }
     }
@@ -33,12 +42,12 @@ export default{
 </script>
 
 <template>
-    <div class="card" @click="selectCard">
-        <div v-if="visible" class="card-side front">
+    <div class="card" :class="flippedStyles" @click="selectCard">
+        <div class="card-side front">
             <img :src="`/Images/${value}.png`" :alt="value" />
             <img v-if="matched" src="../../public/Images/checkmark.svg" class="icon-checkmark" />
         </div>
-        <div v-else class="card-side back">
+        <div class="card-side back">
         </div>
     </div>
 </template>
@@ -46,6 +55,12 @@ export default{
 <style>
 .card{
   position: relative;
+  transition: 0.5s transform ease-in;
+  transform-style: preserve-3d;
+}
+
+.card.is-flipped {
+    transform: rotateY(180deg);
 }
 
 .card-side {
@@ -56,11 +71,13 @@ export default{
     display: flex;
     align-items: center;
     justify-content: center;
+    backface-visibility: hidden;
 }
 
 .card-side.front {
     background-color: rgb(228, 183, 101);
     color: white;
+    transform: rotateY(180deg);
 }
 
 .card-side.back {
