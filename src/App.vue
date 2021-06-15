@@ -87,8 +87,11 @@ export default {
       cardList.value[payload.position].visible = true
 
       if (userSelection.value[0]) {
-        if (userSelection.value[0].position === payload.position && userSelection.value[0].faceValue === payload.faceValue) {
-          return
+        if (
+          userSelection.value[0].position === payload.position &&
+           userSelection.value[0].faceValue === payload.faceValue
+           ) {
+             return
         } else {
           userSelection.value[1] = payload
         }
@@ -155,7 +158,7 @@ h1{
   text-align: center;
   color: #2c3e50;
   background-image: url('../public/Images/page-bg.png');
-  background-color: #9D5900;
+  background-color: #573f21;
   height: 100vh;
   color: #FF6D00;
   padding-top: 10px;
