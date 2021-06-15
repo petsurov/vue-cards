@@ -18,6 +18,7 @@
 <script>
 import _ from 'lodash'
 import { computed, ref, watch } from 'vue'
+import { runConfetti } from './utilities/confetti'
 import Card from './components/Card.vue'
 
 export default {
@@ -86,9 +87,7 @@ export default {
 
       if (userSelection.value[0]) {
         if (
-          userSelection.value[0].position === payload.position &&
-           userSelection.value[0].faceValue === payload.faceValue
-           ) {
+          userSelection.value[0].position === payload.position && userSelection.value[0].faceValue === payload.faceValue) {
              return
         } else {
           userSelection.value[1] = payload
@@ -97,6 +96,13 @@ export default {
         userSelection.value[0] = payload
       }
     }
+    
+    //example
+    watch(remainingPairs, currentValue => {
+      if (currentValue === 0) {
+        runConfetti()
+      }
+    })
 
     watch(userSelection, currentValue => {
       if (currentValue.length === 2) {
@@ -112,8 +118,6 @@ export default {
             cardList.value[secondCard.position].visible = false
           }, 2000)
         }
-
-
         userSelection.value.length = 0
       }
     },
