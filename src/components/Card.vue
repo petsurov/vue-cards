@@ -47,8 +47,7 @@ export default {
             <img :src="`/Images/${value}.png`" :alt="value" />
             <img v-if="matched" src="../../public/Images/checkmark.svg" class="icon-checkmark" />
         </div>
-        <div class="card-side back">
-        </div>
+        <div class="card-side back"></div>
     </div>
 </template>
 

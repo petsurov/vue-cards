@@ -1,16 +1,16 @@
 <template>
   <h1>Card Memory Game</h1>
-  <section class="game-board">
+  <transition-group tag="section" class="game-board" name="shuffle-card">
     <Card 
-    v-for="(card, index) in cardList"
-    :key="`card-${index}`"
+    v-for="card in cardList"
+    :key="`${card.value}-${card.variant}`"
     :matched="card.matched"
     :value="card.value"
     :visible="card.visible"
     :position="card.position"
     @select-card="flipCard"
     />
-  </section>
+  </transition-group>
   <h2>{{ status }}</h2>
   <button @click="restartGame" class="button" ><img src="Images/restart.svg" alt="Restart Icon"/> Restart Game </button>
 </template>
@@ -41,12 +41,8 @@ export default {
       return remainingCards / 2
     })
 
-    const shuffleCards = () => {
-      cardList.value = _.shuffle(cardList.value)
-    }
-
     const restartGame = () => {
-      shuffleCards()
+      cardList.value = _.shuffle(cardList.value)
 
       cardList.value = cardList.value.map((card, index) => {
         return {
@@ -63,6 +59,7 @@ export default {
     cardItems.forEach(item => {
       cardList.value.push({
         value: item,
+        variant: 1,
         visible: false,
         position: null,
         matched: false
@@ -70,6 +67,7 @@ export default {
 
       cardList.value.push({
         value: item,
+        variant: 2,
         visible: false,
         position: null,
         matched: false
@@ -127,7 +125,6 @@ export default {
       flipCard,
       userSelection,
       status,
-      shuffleCards,
       restartGame
     }
   }
@@ -186,5 +183,8 @@ h1{
 .button img {
   padding-right: 5px;
   font-weight: bold;
+}
+.shuffle-card-move {
+  transition: transform 0.8s ease-in;
 }
 </style>
